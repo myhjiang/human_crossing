@@ -1,12 +1,9 @@
-"""rough building generlization, considering the sidewalk scenario"""
-
-
 import json
 
 import geopandas as gpd
 
 # folder 
-base_folder = r'..\example_1\data'
+base_folder = r'..\example_0'
 folder_temp = rf'{base_folder}\temp'
 # read param json 
 with open(rf'{base_folder}\param.json') as fp: 
@@ -16,6 +13,7 @@ building_level = param_dict['building_level']
 size = param_dict['size_code']
 # size = 'A5_off'
 # decide which scale folder the processing result goes by the scale
+base_folder = rf"{base_folder}\data"
 if 'A3' in size:
     scale = 500
     folder = rf'{base_folder}\500'
@@ -60,20 +58,21 @@ if sidewalk_area_df is not None:
     street_area = gpd.read_file(rf'{folder}\street_from_sidewalk.geojson')
     sidewalk_buffer = sidewalk_area_df.geometry.unary_union.buffer(area_gap_meter)
     streets_buffer = street_area.geometry.unary_union.union(sidewalk_buffer)
-if sidewalk_line_df is not None:
+elif sidewalk_line_df is not None:
     sidewalk_buffer = sidewalk_line_df.geometry.unary_union.buffer(area_gap_meter)
     streets_buffer = streets_df.geometry.unary_union.buffer(area_gap_meter).union(sidewalk_buffer)
 # if only street, then move further away to leave space for a potential cycleway or something
 else:
-    if (pref == "displace") & (busstop_df is not None):
-        # NOTSURE: not tested. 220910
-        # if the bus stop has been displaced, the buffer need to add the bus stops
-        streets_buffer = streets_df.geometry.unary_union.union(busstop_df.geometry.unary_union).buffer(area_gap_meter+line_gap_meter+line_width_meter)
-    else:
-        streets_buffer = streets_df.geometry.unary_union.buffer(area_gap_meter+line_gap_meter+line_width_meter)
+    streets_buffer = streets_df.geometry.unary_union.buffer(area_gap_meter+line_gap_meter+line_width_meter)
+if (pref == "displace") & (busstop_df is not None):
+    # NOTSURE: not tested. 220910
+    # if the bus stop has been displaced, the buffer need to add the bus stops
+    streets_buffer = streets_buffer.unary_union.union(busstop_df.geometry.unary_union).buffer(area_gap_meter+line_gap_meter+line_width_meter)
+# else:
+#     streets_buffer = streets_df.geometry.unary_union.buffer(area_gap_meter+line_gap_meter+line_width_meter)
 
 # validity
-# TODO: this has go somewhere. 
+# TODO: this has to go somewhere. 
 
 # cut buildings
 building_df.geometry = building_df.geometry.difference(streets_buffer)
@@ -89,14 +88,18 @@ def DandE(geom, d, n):
 def buildingGen(building_level, geometry):
     d1 = 0; d2 = 0
     if building_level == 'rough':
-        d1 = 20; d2 = 10
-        geometry = DandE(geometry, d1, 3)
+        if 'example_0' in base_folder:
+            d1 = 10; d2 = 10
+        else:
+            d1 = 20; d2 = 10
+        geometry = DandE(geometry, d1, 4)
         geometry = geometry.simplify(5)
         # # difference clip again
         # geometry = geometry.difference(streets_buffer)
         geometry = DandE(geometry, d2, 1)
         geometry = geometry.simplify(5)
         geometry = geometry.difference(streets_buffer)
+        geometry = geometry.simplify(2)
         single_parts = list(geometry)
         return single_parts
     elif building_level == 'detailed':
@@ -108,6 +111,7 @@ def buildingGen(building_level, geometry):
         geometry = DandE(geometry, d2, 2)
         geometry = geometry.simplify(3)
         geometry = geometry.difference(streets_buffer)
+        geometry = geometry.simplify(2)
         single_parts = list(geometry)
         return single_parts
 

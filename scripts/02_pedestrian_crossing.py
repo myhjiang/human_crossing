@@ -3,6 +3,7 @@ adjustments in the street area / street boundary filled/original differences"""
 
 import itertools
 import json
+import os
 
 import geopandas as gpd
 from shapely import affinity
@@ -10,7 +11,7 @@ from shapely.geometry import LineString
 from shapely.ops import nearest_points
 
 # folder 
-base_folder = r'..\example_1\data'
+base_folder = r'..\example_1'
 folder_temp = rf'{base_folder}\temp'
 # read param json 
 with open(rf'{base_folder}\param.json') as fp: 
@@ -19,6 +20,7 @@ epsg = param_dict['epsg']
 size = param_dict['size_code']
 
 # decide which scale folder the processing result goes by the scale
+base_folder = rf"{base_folder}\data"
 if 'A3' in size:
     scale = 500
     folder = rf'{base_folder}\500'
@@ -32,6 +34,7 @@ lane_width = param_dict['lane_width']
 crossing_point = gpd.read_file(rf'{base_folder}\crossing_points.geojson')
 street_displaced = gpd.read_file(rf'{base_folder}\snapped_streets.geojson')
 extent_df = gpd.read_file(rf'{base_folder}\big_extent.geojson')
+small_extent = gpd.read_file(rf'{base_folder}\extent_{size}.geojson')
 street_area = gpd.read_file(rf'{folder}\street_area.geojson')
 street_boundary = gpd.read_file(rf'{folder}\street_boundary_original.geojson')
 street_outer_boundary = gpd.read_file(rf'{folder}\street_boundary_filled.geojson')
@@ -44,6 +47,8 @@ except:
 lane_width = param_dict['lane_width']
 line_width_meter = scale*param_dict['line_width'] / 1000.0
 street_displaced['dist'] = street_displaced.lanes.apply(lambda x: (lane_width*x+2*line_width_meter)/2)
+
+# TODO: remove the crossing point on the cycleway
 
 # cut with extent
 crossing_point['inside_extent'] = crossing_point['geometry'].intersection(extent_df.geometry.tolist()[0])
@@ -106,16 +111,26 @@ join_df['short_line'] = join_df.apply(lambda x: snapStreet(x.short_line, street_
 
 # before shrinking on the island side:
 # remove the islands that are not connected by the zebras and redo the street boundaries
+# also remove the "fake ones" outside the extent
 def standaloneIsland(island_df, crossing_df, street_area_df):
     extended_crossing = crossing_df.copy()
     extended_crossing.short_line = extended_crossing.apply(lambda x: affinity.scale(x.short_line, 1.01, 1.01), axis=1)
+    island_df = island_df[island_df.geometry.intersects(extent_df.geometry.unary_union)]
+    if len(island_df) == 0:
+        # remove the file!
+        os.remove(rf"{folder}\islands_full.geojson")
+        return 
     island_df['connected'] = island_df.geometry.intersects(extended_crossing.geometry.unary_union)
     island_df = island_df[island_df['connected']==True]
     # output new files
-    island_df.to_file(rf"{folder}\islands_full.geojson")
-    # CHECK: do I need to redo the street boundaries again?
+    if len(island_df) > 0:
+        island_df.to_file(rf"{folder}\islands_full.geojson")
+    else:
+        os.remove(rf"{folder}\islands_full.geojson")
+    # CHECK: do I need to redo the street boundaries again? which ones? 
 
-standaloneIsland(island_df, join_df, street_area)
+if island_df is not None:
+    standaloneIsland(island_df, join_df, street_area)
 
 # shrink line helper
 def shrinkLine(p1,p2, shrink_dist):
@@ -165,8 +180,11 @@ join_df = join_df.groupby('osm_id').agg({x: 'first' if x in ['short_line', 'name
 street_ids = join_df.index_right.values.tolist()
 doubles = [x for x in street_ids if len(x) > 1]
 unique_doubles = [list(x) for x in set(tuple(x) for x in doubles)]
-with open(rf'{folder_temp}\double_streets.json', 'w') as fp:
-    json.dump([ob for ob in unique_doubles], fp)
+try:
+    with open(rf'{folder_temp}\double_streets.json', 'w') as fp:
+        json.dump([ob for ob in unique_doubles], fp)
+except:
+    pass
 
 doubles_df = join_df[join_df['index_right'].str.len()>1]
 doubles_df = doubles_df.groupby(doubles_df['index_right'].map(tuple)).agg({'osm_id': lambda x: list(x), 'short_line': lambda x: list (x)})

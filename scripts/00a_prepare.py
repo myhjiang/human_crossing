@@ -8,14 +8,9 @@ import geopandas as gpd
 from shapely.geometry import box
 
 # folder 
-folder = r'..\example_1\data'
+folder = r'..\example_1'
 
 # make new folders
-from pathlib import Path
-
-Path(rf"{folder}/1000").mkdir(parents=True, exist_ok=True)
-Path(rf"{folder}/500").mkdir(parents=True, exist_ok=True)
-Path(rf"{folder}/temp").mkdir(parents=True, exist_ok=True)
 
 
 import json
@@ -33,12 +28,20 @@ size_code = param_dict['size_code']
 
 epsg = param_dict['epsg']
 
-# size_code = 'A5_on'
+
 if 'A3' in size_code:
     scale = 500
 else:
     scale = 1000
 x, y = size_dict[size_code]
+
+folder = rf"{folder}\data"
+
+from pathlib import Path
+
+Path(rf"{folder}/1000").mkdir(parents=True, exist_ok=True)
+Path(rf"{folder}/500").mkdir(parents=True, exist_ok=True)
+Path(rf"{folder}/temp").mkdir(parents=True, exist_ok=True)
 
 half_x = x / 2.0 * scale / 1000
 half_y = y / 2.0 * scale / 1000
@@ -57,7 +60,7 @@ gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')
 gdf.to_file(rf'{folder}\extent_{size_code}.geojson', driver='GeoJSON')  # real extent based on paper choice
 
 # the bigger extent for processing
-x, y = [450, 300]
+x, y = [400, 400]
 half_x = x / 2.0 
 half_y = y / 2.0 
 inProj = Proj(init='epsg:4326')

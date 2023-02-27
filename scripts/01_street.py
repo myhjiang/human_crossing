@@ -6,8 +6,7 @@ import geopandas as gpd
 from shapely.geometry import Polygon
 
 # folder 
-base_folder = r'..\example_1\data'
-folder_temp = rf'{base_folder}\temp'
+base_folder = r'..\example_1'
 
 # read QGIS setup json
 with open(r"qgis_env.json", 'r') as f:
@@ -19,6 +18,8 @@ epsg = param_dict['epsg']
 size = param_dict['size_code']
 # size = 'A5'
 # decide which scale folder the processing result goes by the scale
+base_folder = rf"{base_folder}\data"
+folder_temp = rf'{base_folder}\temp'
 if 'A3' in size:
     scale = 500
     folder = rf'{base_folder}\500'
@@ -96,6 +97,7 @@ smoothed = processing.run('native:smoothgeometry',
 # ---------------------------------
 # --------------------------------- get island -----------------------------
 extent_df = gpd.read_file(rf"{base_folder}\big_extent.geojson")
+small_extent = gpd.read_file(rf"{base_folder}\extent_{size}.geojson")
 street_area_df = gpd.read_file(rf"{folder}\street_area.geojson")
 try:
     buildings_df = gpd.read_file(rf"{base_folder}\buildings.geojson")
@@ -126,6 +128,15 @@ try:
 except:
     island_df = None
 
+# remove the islands that is out of extent
+if island_df is not None:
+    island_df = island_df[island_df.geometry.intersects(small_extent.geometry.unary_union)]
+    if len(island_df) == 0:
+        # remove the file!
+        os.remove(rf"{folder}\islands_full.geojson")
+        island_df = None
+    island_df.to_file(rf"{folder}\islands_full.geojson")
+
 '''if there is sidewalk area data, 
 will need to redo the street based on the sidewalk'''
 # if sidewalk area data exists
@@ -134,12 +145,14 @@ if os.path.exists(rf"{base_folder}\sidewalk_area.geojson"):
     # carve out street area based on sidewalk
     # NOTSURE: if the sidewalk data is not complete or anything, going to be very problematic
     merged = buildings_df.geometry.unary_union.union(sidewalk_df.geometry.unary_union)  # multipolygon
+    # merged = merged.intersection(small_extent.geometry.unary_union)
     if green_df is not None:
         merged = merged.union(green_df.geometry.unary_union)
     cut = extent_df.geometry.unary_union.difference(merged)
     d = {'geometry': [cut]}
     gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')
     gdf = gdf.explode(index_parts=True)
+    gdf.to_file(rf"{folder_temp}\cut.geojson")
 
     # only take the big middle piece, other smaller / not connected pieces will be discarded.
     # NOTSURE what condition to use here? biggest area + intersectng island? 
@@ -149,7 +162,9 @@ if os.path.exists(rf"{base_folder}\sidewalk_area.geojson"):
     # merge with island, and TODO: get rid of little bits / holes
         gdf.geometry = gdf.geometry.union(island_df.geometry.unary_union)
     else: 
-        gdf = gdf[gdf.geometry.disjoint(buildings_df.geometry.unary_union)]
+        # CHECK: this condition, disjoint building or intersects streets?
+        gdf = gdf[gdf.geometry.intersects(street_area_df.geometry.unary_union)]
+        # gdf.to_file(rf"{folder_temp}\cut.geojson")
     # out, street and the "boundary filled"
     gdf.to_file(rf"{folder}\street_from_sidewalk.geojson")
     gdf['boundary'] = gdf.geometry.boundary
@@ -177,11 +192,14 @@ else:
     out = street_area_df[['boundary']]
     out.to_file(rf"{folder}\street_boundary_original.geojson")
     street_area_df.set_geometry('geometry', inplace=True)
-    merged = street_area_df.geometry.unary_union.union(island_df.geometry.unary_union)
-    boundary = merged.boundary
-    d = {'geometry': [boundary]}
-    gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')
-    gdf = gdf.explode(index_parts=True)
-    gdf.to_file(rf"{folder}\street_boundary_filled.geojson")
+    try: 
+        merged = street_area_df.geometry.unary_union.union(island_df.geometry.unary_union)
+        boundary = merged.boundary
+        d = {'geometry': [boundary]}
+        gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')
+        gdf = gdf.explode(index_parts=True)
+        gdf.to_file(rf"{folder}\street_boundary_filled.geojson")
+    except:
+        out.to_file(rf"{folder}\street_boundary_filled.geojson")
 
 # fin

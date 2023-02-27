@@ -13,7 +13,7 @@ from shapely.geometry import (LineString, MultiLineString, MultiPoint,
 from shapely.ops import nearest_points
 
 # folder 
-base_folder = r'..\example_1\data'
+base_folder = r'..\example_1'
 folder_temp = rf'{base_folder}\temp'
 # read param json 
 with open(rf'{base_folder}\param.json') as fp: 
@@ -21,6 +21,7 @@ with open(rf'{base_folder}\param.json') as fp:
 epsg = param_dict['epsg']
 size = param_dict['size_code']
 # decide which scale folder the processing result goes by the scale
+base_folder = rf"{base_folder}\data"
 if 'A3' in size:
     scale = 500
     folder = rf'{base_folder}\500'
@@ -208,7 +209,6 @@ def splitIsland(x):
     else:
         print((x.intersection_count))
         return x.geometry
-        pass
     
 
 join_df['test'] = join_df.apply(lambda x: splitIsland(x) if x.split==1 else x.geometry, axis=1)
@@ -274,6 +274,6 @@ out.to_file(rf'{folder}\island_split.geojson', driver='GeoJSON')
 join_df.set_geometry('interactors', inplace=True)
 out2 = join_df[['level_1', 'interactors', 'street_ids']]
 out2['highway'] = 'island'
-out2.to_file(rf'{folder}\island_interactors_1.geojson', driver='GeoJSON')
+# out2.to_file(rf'{folder}\island_interactors_1.geojson', driver='GeoJSON')
 
 # fin

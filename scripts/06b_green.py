@@ -3,7 +3,7 @@ import json
 import geopandas as gpd
 
 # folder 
-base_folder = r'..\example_1\data'
+base_folder = r'..\example_0'
 folder_temp = rf'{base_folder}\temp'
 # read param json 
 with open(rf'{base_folder}\param.json') as fp: 
@@ -12,6 +12,7 @@ epsg = param_dict['epsg']
 size = param_dict['size_code']
 # size = 'A5_off'
 # decide which scale folder the processing result goes by the scale
+base_folder = rf"{base_folder}\data"
 if 'A3' in size:
     scale = 500
     folder = rf'{base_folder}\500'
@@ -91,7 +92,8 @@ def DandE(geom, d, n):
         geom = geom.buffer(-d, cap_style=3, join_style=2)
         i = i+1
     return geom
-geometry = DandE(geometry, 10, 3)
+geometry = DandE(geometry, 5, 2)
+geometry = geometry.simplify(2)
 single_parts = list(geometry)
 d = {'geometry': single_parts}
 gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')

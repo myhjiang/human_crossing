@@ -7,11 +7,18 @@ import geopandas as gpd
 import networkx as nx
 import numpy as np
 import ogr
+import osgeo.gdal as gdal
 import pandas as pd
 from shapely.geometry import *
+import shapely
+
+# print(gpd.__version__)
+# print(shapely.__version__)
+# print(gdal.VersionInfo())
+# quit()
 
 # folder 
-base_folder = r'..\example_1\data'
+base_folder = r'..\example_1'
 folder_temp = rf'{base_folder}\temp'
 
 # read QGIS setup json
@@ -23,6 +30,7 @@ with open(rf'{base_folder}\param.json') as fp:
 epsg = param_dict['epsg']
 size = param_dict['size_code']
 # decide which scale folder the processing result goes by the scale
+base_folder = rf"{base_folder}\data"
 if 'A3' in size:
     scale = 500
     folder = rf'{base_folder}\500'
@@ -80,6 +88,8 @@ gdf = gpd.GeoDataFrame(line_list, columns=['osm_id', 'name', 'highway', 'other_t
 
 # street
 streets_df = gdf[gdf['highway'].isin(street_selection_list)]
+# remove some little streets
+streets_df = streets_df[~(streets_df['other_tags'].apply(parseTags, args=('access',))=='private')]
 streets_df.to_file(rf'{base_folder}\streets.geojson', driver='GeoJSON')
 # crossing lines
 crossing_lines_df = gdf[(gdf['highway']=='footway') & (gdf['other_tags'].apply(parseTags, args=('footway',))=='crossing')]
@@ -314,6 +324,7 @@ def find_hanging(df, line):
         return Point()
     
 streets_df['hanging'] = streets_df.apply(lambda x: find_hanging(streets_df, x.geometry) if ((x.extent_empty_flag==1) and (x['name']!=None)) else Point(), axis=1)
+
 streets_df['hanging_flag'] = streets_df.apply(lambda x: 0 if (x['hanging'].is_empty) else 1, axis=1)
 # TODO this hanging condition, missed bus line, or other service line that might be really "hanging"
 
@@ -341,7 +352,10 @@ def extend_to_extent(line, point, box):
     long_line = getExtrapoledLine(prev_point, point)
     if box.intersects(long_line):
         intersection_points = box.intersection(long_line)
-        new_point_coords = list(intersection_points.coords)[0]
+        try:  # CHECK: WHY IS THIS
+            new_point_coords = list(intersection_points.coords)[0]
+        except:
+            return line
     else:
         print('not long enough')
         return line
