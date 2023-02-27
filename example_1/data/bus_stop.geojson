@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "osm_id": "257736484", "name": "Brant Université", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864020.521214610664174, 6204840.586940714158118 ] } },
+{ "type": "Feature", "properties": { "osm_id": "1236527334", "name": "Brant Université", "highway": "bus_stop", "other_tags": "\"bench\"=>\"yes\",\"bin\"=>\"yes\",\"bus\"=>\"yes\",\"lit\"=>\"yes\",\"public_transport\"=>\"platform\",\"route_ref\"=>\"6;15a;30;72\",\"shelter\"=>\"yes\",\"tactile_paving\"=>\"yes\"" }, "geometry": { "type": "Point", "coordinates": [ 864023.682688149157912, 6204828.420058407820761 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6690365432", "name": "Brant Université", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 863990.119861675077118, 6204830.052405368536711 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6690820378", "name": "Dordogne", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864612.251099871355109, 6205508.732005587778986 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6690820455", "name": "Clinique de l'Orangerie", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864427.126786682172678, 6205230.39075121562928 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6690820456", "name": "Clinique de l'Orangerie", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864366.76935877406504, 6205190.522676024585962 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6690859818", "name": "Golbery", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864512.597891713259742, 6205095.94403038173914 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6780686620", "name": "Dordogne", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864575.048126048292033, 6205421.723088914528489 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6780689290", "name": "Orangerie", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864910.398092063027434, 6205888.72064386960119 ] } },
+{ "type": "Feature", "properties": { "osm_id": "6780689291", "name": "Orangerie", "highway": null, "other_tags": "\"bus\"=>\"yes\",\"public_transport\"=>\"stop_position\"" }, "geometry": { "type": "Point", "coordinates": [ 864918.134796673082747, 6205945.977911180816591 ] } }
+]
+}

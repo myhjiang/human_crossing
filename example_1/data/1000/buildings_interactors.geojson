@@ -1,0 +1,12 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "index": 0, "osm_way_id": "41342340,41342343", "highway": "buildings" }, "geometry": { "type": "Point", "coordinates": [ 864279.175180591293611, 6204950.772996063344181 ] } },
+{ "type": "Feature", "properties": { "index": 1, "osm_way_id": "41347093", "highway": "buildings" }, "geometry": { "type": "Point", "coordinates": [ 864277.506333739729598, 6204998.921687227673829 ] } },
+{ "type": "Feature", "properties": { "index": 2, "osm_way_id": "40817530,40817531,40817532,40817533", "highway": "buildings" }, "geometry": { "type": "Point", "coordinates": [ 864220.787134510348551, 6204880.588351950980723 ] } },
+{ "type": "Feature", "properties": { "index": 3, "osm_way_id": "40817534", "highway": "buildings" }, "geometry": { "type": "Point", "coordinates": [ 864282.688561127404682, 6204871.564914850518107 ] } },
+{ "type": "Feature", "properties": { "index": 4, "osm_way_id": "41347813,41347814,41347820", "highway": "buildings" }, "geometry": { "type": "Point", "coordinates": [ 864161.499518091208301, 6205010.536423405632377 ] } },
+{ "type": "Feature", "properties": { "index": 5, "osm_way_id": "40519947,40519948,40519949,40519950", "highway": "buildings" }, "geometry": { "type": "Point", "coordinates": [ 864117.456255083554424, 6204919.794979645870626 ] } }
+]
+}

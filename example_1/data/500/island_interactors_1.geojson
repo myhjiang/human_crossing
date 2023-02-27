@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "level_1": 3, "street_ids": "777297385,964314481", "highway": "island" }, "geometry": { "type": "Point", "coordinates": [ 864210.88874061498791, 6204971.990153418853879 ] } },
+{ "type": "Feature", "properties": { "level_1": 5, "street_ids": "40519929,831735431", "highway": "island" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 864096.359265936538577, 6205006.948690172284842 ], [ 864099.851232707500458, 6205013.009502854198217 ] ] } },
+{ "type": "Feature", "properties": { "level_1": 6, "street_ids": "19349569", "highway": "island" }, "geometry": { "type": "Point", "coordinates": [ 864053.092457226943225, 6204948.565719370730221 ] } },
+{ "type": "Feature", "properties": { "level_1": 8, "street_ids": "10267197,657060054", "highway": "island" }, "geometry": { "type": "Point", "coordinates": [ 864108.485099323792383, 6204815.077393303625286 ] } },
+{ "type": "Feature", "properties": { "level_1": 11, "street_ids": "237382186,26306547", "highway": "island" }, "geometry": { "type": "Point", "coordinates": [ 864249.962324570980854, 6204926.234640324488282 ] } },
+{ "type": "Feature", "properties": { "level_1": 12, "street_ids": "123313751,8454283", "highway": "island" }, "geometry": { "type": "Point", "coordinates": [ 864176.460067009087652, 6204924.953603911213577 ] } },
+{ "type": "Feature", "properties": { "level_1": 13, "street_ids": "41338113,692635521", "highway": "island" }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 864109.554201428196393, 6204984.644934029318392 ], [ 864151.022374665364623, 6204967.469210769049823 ] ] } }
+]
+}
