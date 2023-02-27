@@ -225,6 +225,6 @@ Templates can be designed in QGIS as qpt files. **But**, your own template might
 
 ## sources and other
 
-[BANA guideline on tactile graphics](![image-20230227142759860](C:/Users/marki/AppData/Roaming/Typora/typora-user-images/image-20230227142759860.png))
+[BANA guideline on tactile graphics](https://www.brailleauthority.org/tg/web-manual/index.html)
 
 [QGIS on conda](https://anaconda.org/conda-forge/qgis)
