@@ -73,7 +73,7 @@ from qgis.core import (QgsApplication, QgsFeature, QgsField, QgsGeometry,
 QgsApplication.setPrefixPath(prefixpath, True)
 qgs = QgsApplication([], False)
 qgs.initQgis()
-sys.path.append(rf"{env_dict['PathAppend']}")
+
 import processing
 from processing.core.Processing import Processing
 from qgis.analysis import QgsNativeAlgorithms
@@ -141,7 +141,10 @@ if island_df is not None:
         # remove the file!
         os.remove(rf"{folder}/islands_full.geojson")
         island_df = None
-    island_df.to_file(rf"{folder}/islands_full.geojson")
+    try:
+        island_df.to_file(rf"{folder}/islands_full.geojson")
+    except:
+        pass
 
 '''if there is sidewalk area data, 
 will need to redo the street based on the sidewalk'''
