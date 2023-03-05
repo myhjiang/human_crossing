@@ -7,6 +7,9 @@ from shapely.geometry import MultiLineString
 from shapely.ops import nearest_points
 from shapely import affinity
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import argparse
 parser = argparse.ArgumentParser(description='set folder')
 parser.add_argument('folder', metavar='fd', type=str)
@@ -108,12 +111,12 @@ def displaceSidewalk(curb, sidewalk, distance):
     '''sidewalk is the geom line'''
     nearests = nearest_points(curb, sidewalk)
     if nearests[0].distance(nearests[1])> distance:
-        print('initially ok')
+        # print('initially ok')
         return sidewalk
     i = 0 
     while i < 1:
         if nearests[0].distance(nearests[1])> distance:
-            print(f"intil {i} and ok")
+            # print(f"intil {i} and ok")
             return sidewalk
             break
         # move
@@ -125,7 +128,7 @@ def displaceSidewalk(curb, sidewalk, distance):
             x_sign = 1 if (sidewalk.centroid.x > extnet_center.x) else -1 
             y_sign = 1 if (sidewalk.centroid.y > extnet_center.y) else -1 
             b = azimuth(extnet_center, nearests[1]) + 90
-            print(x_sign, y_sign)
+            # print(x_sign, y_sign)
         x_move = distance * abs(np.cos(np.radians(b))) * x_sign 
         y_move = distance * abs(np.sin(np.radians(b))) * y_sign
         sidewalk = affinity.translate(sidewalk, x_move, y_move)

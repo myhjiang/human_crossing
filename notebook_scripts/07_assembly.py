@@ -1,6 +1,9 @@
 from genericpath import isfile
 import json
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import argparse
 parser = argparse.ArgumentParser(description='set folder')
 parser.add_argument('folder', metavar='fd', type=str)
@@ -128,8 +131,8 @@ def exportLayout(template_code, object_list, style_list):
 
     # ------- ADD LAYERS TO MAP AND STYLE THEM -----------
     # TODO how to name the layers and files better? 
-    print(object_list)
-    print(style_list)
+    # print(object_list)
+    # print(style_list)
     for obj in object_list:
         if obj == '':
             continue

@@ -12,6 +12,9 @@ from shapely.geometry import (LineString, MultiLineString, MultiPoint,
                               MultiPolygon, Point, Polygon)
 from shapely.ops import nearest_points
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import argparse
 parser = argparse.ArgumentParser(description='set folder')
 parser.add_argument('folder', metavar='fd', type=str)
@@ -216,7 +219,7 @@ def splitIsland(x):
         split = MultiPolygon(poly_list)
         return split
     else:
-        print((x.intersection_count))
+        # print((x.intersection_count))
         return x.geometry
     
 
@@ -261,7 +264,7 @@ def getStreetIDs(x, crossing_df):
     street_id_list = []
     for id in x.crossing_ids:
         # df.loc[df['B'] == 3, 'A']
-        print(crossing_df.loc[crossing_df['osm_id']==id, 'street_ids'].values.tolist())
+        # print(crossing_df.loc[crossing_df['osm_id']==id, 'street_ids'].values.tolist())
         try: 
             street_id = crossing_df.loc[crossing_df['osm_id']==id, 'street_ids'].values.tolist()[0]
             street_id_list.append(street_id)

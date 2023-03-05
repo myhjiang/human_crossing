@@ -10,6 +10,9 @@ from shapely import affinity
 from shapely.geometry import LineString
 from shapely.ops import nearest_points
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import argparse
 parser = argparse.ArgumentParser(description='set folder')
 parser.add_argument('folder', metavar='fd', type=str)
@@ -197,7 +200,7 @@ except:
 
 doubles_df = join_df[join_df['index_right'].str.len()>1]
 doubles_df = doubles_df.groupby(doubles_df['index_right'].map(tuple)).agg({'osm_id': lambda x: list(x), 'short_line': lambda x: list (x)})
-print(doubles_df)
+# print(doubles_df)
 
 def removeDoubles(id_list, line_list):
     removed_list = []
@@ -211,7 +214,7 @@ def removeDoubles(id_list, line_list):
             continue
         # # print(line_list)
         line_id = id_list_copy_2[line_list_copy_2.index(line)]
-        print(line_id)
+        # print(line_id)
         # print('remaining lines: ', [idx for idx in id_list_copy])
         # print('distances: ', [linex.distance(line) for linex in line_list_copy])
         line_list_copy_2.remove(line)
@@ -219,12 +222,12 @@ def removeDoubles(id_list, line_list):
         if len(line_list_copy_2) < 1:
             continue
         nearest_line = min([linex for linex in line_list_copy_2], key=lambda x: x.distance(line))
-        print(line.distance(nearest_line))
+        # print(line.distance(nearest_line))
         if line.distance(nearest_line) < 5:  # meter
             removed_list.append(line_id)
             id_list_copy_2.remove(line_id)
             # print(len(id_list_copy), len(line_list_copy))
-            print('removed, ', line_id)
+            # print('removed, ', line_id)
     return removed_list
 
 if doubles_df.empty==False:

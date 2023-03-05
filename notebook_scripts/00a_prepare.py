@@ -7,6 +7,9 @@ make folders"""
 import geopandas as gpd
 from shapely.geometry import box
 
+import warnings
+warnings.filterwarnings('ignore')
+
 import argparse
 parser = argparse.ArgumentParser(description='set folder')
 parser.add_argument('folder', metavar='fd', type=str)
@@ -77,3 +80,6 @@ d = {'geometry': [b]}
 gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')
 gdf.set_geometry('geometry', inplace=True)
 gdf.to_file(rf'{folder}/big_extent.geojson', driver='GeoJSON')
+
+
+print("finished")

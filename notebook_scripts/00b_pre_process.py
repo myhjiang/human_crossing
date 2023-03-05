@@ -6,11 +6,14 @@ import json
 import geopandas as gpd
 import networkx as nx
 import numpy as np
-import ogr
+from osgeo import ogr  # conda qgis only
 import osgeo.gdal as gdal
 import pandas as pd
 from shapely.geometry import *
 import shapely
+
+import warnings
+warnings.filterwarnings('ignore')
 
 import argparse
 parser = argparse.ArgumentParser(description='set folder')
@@ -357,7 +360,7 @@ def extend_to_extent(line, point, box):
         except:
             return line
     else:
-        print('not long enough')
+        # print('not long enough')
         return line
     l_coords.append(new_point_coords)
     new_extended_line = LineString(l_coords)
@@ -371,5 +374,6 @@ out = streets_df[['osm_id', 'name', 'highway', 'other_tags', 'lanes', 'geometry'
 out.to_file(rf'{base_folder}/snapped_streets.geojson', driver='GeoJSON')
 
 # fin
+print("finished")
 
 # MANUAL: check lane estimation and dangling street snap
