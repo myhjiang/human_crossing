@@ -7,7 +7,7 @@ open the binder link (and waaaait for it to load), go to the notebooks in the `n
 
 the notebooks call the same scripts as the scripts in the `scripts` folder, but with some binder specific modifications.
 
-## set-ups
+## set-up on a local machine
 
 **The scripts are developed on a Windows machine. It could work differently on other systems especially the pyQGIS / gdal part. Modify accordingly**. 
 
@@ -17,8 +17,7 @@ the notebooks call the same scripts as the scripts in the `scripts` folder, but 
 - shaply (1.7.0)
 - networkx (2.2)
 - gdal/ogr (3010400)
-- numpy (1.19.1)
-- pyqgis
+- pyqgis ('regular' windows distribution or conda distribution)
 
 Set up PyQGIS on Windows like this [this](https://anitagraser.com/2019/03/03/stand-alone-pyqgis-scripts-with-osgeo4w/) or [this (for conda)](https://anitagraser.com/2023/01/21/pyqgis-jupyter-notebooks-on-windows-using-conda/). And in the `qgis_env.json` file, change the paths accordingly:
 
