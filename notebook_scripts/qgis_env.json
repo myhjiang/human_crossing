@@ -1,0 +1,8 @@
+{
+"PROJ_LIB": "C:\\OSGeo4W64\\share\\proj",
+"PROJ_DEBUG": "3",
+"QT_QPA_PLATFORM_PLUGIN_PATH": "C:\\OSGeo4W64\\apps\\Qt5\\plugins",
+"PATH": ["C:\\OSGeo4W64\\apps\\qgis\bin", "C:\\OSGeo4W64\\apps\\Qt5\bin"],
+"setPrefixPath": "C:\\OSGeo4W64\\apps\\qgis-dev",
+"PathAppend": "C:\\OSGeo4W64\\apps\\qgis-dev\\python\\plugins"
+}
