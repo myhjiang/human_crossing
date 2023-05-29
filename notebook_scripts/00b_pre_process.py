@@ -328,10 +328,10 @@ def find_hanging(df, line):
     
 try:
     streets_df['hanging'] = streets_df.apply(lambda x: find_hanging(streets_df, x.geometry) if ((x.extent_empty_flag==1) and (['name']!=None)) else Point(), axis=1)
+    streets_df['hanging_flag'] = streets_df.apply(lambda x: 0 if (x['hanging'].is_empty) else 1, axis=1)
 except:
     streets_df['hanging'] = streets_df.apply(lambda x: find_hanging(streets_df, x.geometry) if ((x.extent_empty_flag==1) and (pd.notnull(x['name']))) else Point(), axis=1)
-
-streets_df['hanging_flag'] = streets_df.apply(lambda x: 0 if (x['hanging'].is_empty) else 1, axis=1)
+    streets_df['hanging_flag'] = streets_df.apply(lambda x: 0 if (x['hanging'].is_empty) else 1, axis=1)
 # TODO this hanging condition, missed bus line, or other service line that might be really "hanging"
 
 # extend the hanging line to extent
