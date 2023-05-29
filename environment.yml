@@ -4,5 +4,5 @@ channels:
   - defaults
 dependencies:
   - geopandas=0.10.2
-  - pandas=1.1.5
+  - pandas<2
   - qgis
