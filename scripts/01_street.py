@@ -187,19 +187,22 @@ if os.path.exists(rf"{base_folder}\sidewalk_area.geojson"):
 # if there is no sidewalk areas
 # directly get the filled and original street boundary from the street areas
 else:
+    street_area_df['move_out'] = street_area_df.geometry.buffer(0.5)
     street_area_df['boundary'] = street_area_df.geometry.boundary  
     street_area_df.set_geometry('boundary', inplace=True)
     out = street_area_df[['boundary']]
     out.to_file(rf"{folder}\street_boundary_original.geojson")
     street_area_df.set_geometry('geometry', inplace=True)
     try: 
-        merged = street_area_df.geometry.unary_union.union(island_df.geometry.unary_union)
+        merged = street_area_df.move_out.unary_union.union(island_df.geometry.unary_union)
         boundary = merged.boundary
         d = {'geometry': [boundary]}
         gdf = gpd.GeoDataFrame(d, crs=f'epsg:{epsg}')
         gdf = gdf.explode(index_parts=True)
         gdf.to_file(rf"{folder}\street_boundary_filled.geojson")
     except:
+        street_area_df.set_geometry('move_out', inplace=True)
+        out = street_area_df[['move_out']]
         out.to_file(rf"{folder}\street_boundary_filled.geojson")
 
 # fin
