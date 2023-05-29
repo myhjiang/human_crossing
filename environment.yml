@@ -5,4 +5,5 @@ channels:
 dependencies:
   - geopandas=0.10.2
   - pandas<2
+  - shapely=1.7.0
   - qgis
