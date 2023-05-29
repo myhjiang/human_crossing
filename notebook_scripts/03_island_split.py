@@ -3,7 +3,6 @@ TODO: this is pretty much stand alone, doesn't have to be done now for the sidew
 the old script still work. (03_split_island_2)"""
 
 import json
-from macpath import join
 
 import geopandas as gpd
 import numpy as np
