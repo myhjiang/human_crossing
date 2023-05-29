@@ -3,7 +3,8 @@
 ## it's in binder!
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/myhjiang/human_crossing/HEAD)
  
-open the binder link (and waaaait for it to load), go to the notebooks in the `notebook` folder, and run the examples in the notebooks!
+open the binder link (and waaaait for it to load)
+it will load in to the jupyterlab intro page. on the left side, navigate to the `notebook` folder to find the notebooks (`example_0.ipynb` and `example_1.ipynb`), and run the examples in the notebooks!
 
 the notebooks call the same scripts as the scripts in the `scripts` folder, but with some binder specific modifications.
 
