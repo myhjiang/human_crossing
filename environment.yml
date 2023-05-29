@@ -3,5 +3,5 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - geopandas
+  - geopandas=0.10.2
   - qgis
