@@ -1,5 +1,11 @@
 # tactile maps for street intersections
 
+This work is related to the paper at the AGILE 2023 conference:
+**Semi-automated Pipeline to Produce Customizable Tactile Maps of Street Intersections for People with Visual Impairments**
+*Yuhao Jiang, María-Jesús Lobo, Sidonie Christophe, and Christophe Jouffrais*
+AGILE GIScience Ser., 4, 29, 2023, [https://doi.org/10.5194/agile-giss-4-29-2023](https://doi.org/10.5194/agile-giss-4-29-2023)
+
+
 ## it's in binder!
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/myhjiang/human_crossing/HEAD)
  
